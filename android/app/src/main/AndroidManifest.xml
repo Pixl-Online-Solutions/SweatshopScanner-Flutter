@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:label="qrscan_flutter"
+        android:label="Sweatshop Scanner"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

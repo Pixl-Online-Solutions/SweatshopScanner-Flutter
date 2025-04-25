@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:video_player/video_player.dart';
 import 'package:lottie/lottie.dart';
 import 'ticket_api_service.dart';
+import 'event_selection_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +25,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String? lastResult;
+  Event? selectedEvent;
 
   void updateLastResult(String result) {
     setState(() {
@@ -33,14 +33,27 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void setSelectedEvent(Event event) {
+    setState(() {
+      selectedEvent = event;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
-      home: LandingScreen(
-        lastResult: lastResult,
-        onUpdateLastResult: updateLastResult,
-      ),
+      home: selectedEvent == null
+          ? EventSelectionScreen(
+              onEventSelected: (event) {
+                setSelectedEvent(event);
+              },
+            )
+          : LandingScreen(
+              lastResult: lastResult,
+              onUpdateLastResult: updateLastResult,
+              // event: selectedEvent, (add to LandingScreen constructor in future if needed)
+            ),
     );
   }
 }
@@ -101,9 +114,6 @@ class _LandingScreenState extends State<LandingScreen> {
               width: double.infinity,
               height: double.infinity,
             ),
-          Container(
-            color: Colors.black.withOpacity(0.55),
-          ),
           SafeArea(
             child: Center(
               child: Column(
@@ -206,30 +216,41 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         builder: (context, setState) {
           return Center(
             child: Container(
-              width: 200,
-              height: 200,
+              width: 220,
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Lottie.asset(
-                valid ? 'assets/lottie/success_animation.json' : 'assets/lottie/error_animation.json',
-                repeat: false,
-                controller: animationController,
-                onLoaded: (composition) {
-                  compositionCompleter.complete(composition);
-                  animationController = AnimationController(
-                    vsync: NavigatorState(),
-                    duration: Duration(milliseconds: (composition.duration.inMilliseconds * 0.75).round()),
-                  );
-                  animationController!.forward();
-                  animationController!.addStatusListener((status) {
-                    if (status == AnimationStatus.completed) {
-                      Navigator.of(context).pop();
-                    }
-                  });
-                  setState(() {}); // To trigger rebuild with controller
-                },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: Lottie.asset(
+                      valid ? 'assets/lottie/success_animation.json' : 'assets/lottie/error_animation.json',
+                      repeat: false,
+                      controller: animationController,
+                      onLoaded: (composition) {
+                        compositionCompleter.complete(composition);
+                        animationController = AnimationController(
+                          vsync: NavigatorState(),
+                          duration: Duration(milliseconds: (composition.duration.inMilliseconds * 0.75).round()),
+                        );
+                        animationController!.forward();
+                        setState(() {}); // To trigger rebuild with controller
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Only close modal
+                    },
+                    child: const Text('Back'),
+                  ),
+                ],
               ),
             ),
           );
@@ -273,9 +294,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
     }
     // Return result to landing screen
     if (apiResult != null) {
-      Future.delayed(const Duration(milliseconds: 700), () {
-        Navigator.of(context).pop(apiResult);
-      });
+      Navigator.of(context).pop(apiResult);
     }
   }
 
@@ -374,30 +393,41 @@ class _ManualEntryScreenState extends State<ManualEntryScreen> {
         builder: (context, setState) {
           return Center(
             child: Container(
-              width: 200,
-              height: 200,
+              width: 220,
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Lottie.asset(
-                valid ? 'assets/lottie/success_animation.json' : 'assets/lottie/error_animation.json',
-                repeat: false,
-                controller: animationController,
-                onLoaded: (composition) {
-                  compositionCompleter.complete(composition);
-                  animationController = AnimationController(
-                    vsync: NavigatorState(),
-                    duration: Duration(milliseconds: (composition.duration.inMilliseconds * 0.75).round()),
-                  );
-                  animationController!.forward();
-                  animationController!.addStatusListener((status) {
-                    if (status == AnimationStatus.completed) {
-                      Navigator.of(context).pop();
-                    }
-                  });
-                  setState(() {}); // To trigger rebuild with controller
-                },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: Lottie.asset(
+                      valid ? 'assets/lottie/success_animation.json' : 'assets/lottie/error_animation.json',
+                      repeat: false,
+                      controller: animationController,
+                      onLoaded: (composition) {
+                        compositionCompleter.complete(composition);
+                        animationController = AnimationController(
+                          vsync: NavigatorState(),
+                          duration: Duration(milliseconds: (composition.duration.inMilliseconds * 0.75).round()),
+                        );
+                        animationController!.forward();
+                        setState(() {}); // To trigger rebuild with controller
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Only close modal
+                    },
+                    child: const Text('Back'),
+                  ),
+                ],
               ),
             ),
           );

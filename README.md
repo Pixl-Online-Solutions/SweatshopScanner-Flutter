@@ -19,3 +19,10 @@ QRScan_Flutter is a cross-platform mobile application built with Flutter, design
 ---
 
 For developers: See the Flutter documentation for setup and customization guidance.
+
+---
+
+## Next Steps
+
+- Link Event Logic with Scan logic
+- Fix navigation issues (App closing on back and back button not being present)
