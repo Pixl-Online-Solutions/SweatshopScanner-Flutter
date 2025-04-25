@@ -1,16 +1,21 @@
-# qrscan_flutter
+# QRScan_Flutter
 
-A new Flutter project.
+QRScan_Flutter is a cross-platform mobile application built with Flutter, designed for fast and secure ticket validation and event entry using QR code scanning technology.
 
-## Getting Started
+## Scope of the App
 
-This project is a starting point for a Flutter application.
+- **Ticket Validation:** Scan QR codes on event tickets to verify their authenticity and grant or deny access instantly.
+- **Event Entry Management:** Streamline the check-in process at events, reducing wait times and minimizing manual errors.
+- **API Integration:** Connects to remote ticketing APIs to fetch and validate ticket information in real-time.
+- **User Feedback:** Provides immediate visual feedback (success/error animations) upon scanning, ensuring a smooth user experience for both staff and attendees.
+- **Cross-Platform:** Runs on both Android and iOS devices.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
+- Fast QR code scanning using the device camera
+- Animated feedback for successful and failed scans
+- Secure API communication for ticket validation
+- Easy setup and configuration for event organizers
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For developers: See the Flutter documentation for setup and customization guidance.
